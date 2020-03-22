@@ -1,12 +1,5 @@
-# Spring REST Hello World Example
+do the changes in the file and the run the docker file for Dockerfile commited.
 
-Article link : https://www.mkyong.com/spring-boot/spring-rest-hello-world-example/
+>docker build --build-arg url=https://github.com/pravinaec/RedisPoc.git --build-arg project=RedisPoc --build-arg artifactid=spring-RedisServer  --build-arg version=1.0 -t pravisin/springredisserver .
 
-## 1. How to start
-```
-$ git clone https://github.com/mkyong/spring-boot.git
-$ cd spring-rest-hello-world
-$ mvn spring-boot:run
-
-$ curl -v localhost:8080/books
-```
+how to run :>>docker run --name redisPOCRest -ti -p 8080:8080 pravisin/springredisserver:latest
