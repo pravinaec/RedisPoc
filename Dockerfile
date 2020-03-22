@@ -1,18 +1,18 @@
-# For Java 8, try this
-# FROM openjdk:8-jdk-alpine
-
-# For Java 11, try this
-FROM adoptopenjdk/openjdk11:alpine-jre
-
-# Refer to Maven build -> finalName
-ARG JAR_FILE=target/spring-rest-hello-world-1.0.jar
-
-# cd /opt/app
-WORKDIR /opt/app
-
-# cp target/spring-rest-hello-world-1.0.jar /opt/app/app.jar
-COPY ${JAR_FILE} app.jar
+FROM alpine/git as clone
+ARG url
+WORKDIR /app
+RUN git clone ${url}
+FROM maven:3.5-jdk-8-alpine as build
+ARG project
+WORKDIR /app
+COPY --from=clone /app/${project} /app
+RUN mvn install
+FROM openjdk:8-jre-alpine
+ARG artifactid
+ARG version
+ENV artifact ${artifactid}-${version}.jar
+WORKDIR /app
+COPY --from=build /app/target/${artifact} /app
 EXPOSE 8080
-
-# java -jar /opt/app/app.jar
-ENTRYPOINT ["java","-jar","app.jar"]
+ENTRYPOINT ["sh", "-c"]
+CMD ["java -jar ${artifact}"]
