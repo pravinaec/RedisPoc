@@ -7,7 +7,12 @@ package com.iplanet.im.server;
 
 
 import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintStream;
+import java.util.Properties;
 import org.redisson.api.RedissonClient;
 import org.redisson.config.Config;
 import org.redisson.Redisson;
@@ -25,13 +30,29 @@ public class RedisClusterUtility {
      static Config config = null;
      public static final String CLUSTER_URL = "iim_server.redis_url";
      public static String cluster_url = "";
+     public static String propFileName="/app/pravin.properties";
      private static Codec codec = new SerializationCodec();     
+     static String getProperties() throws Exception{
+          Properties prop = new Properties();
+         // String propFileName = "config.properties";
+          RedisClusterUtility p=new RedisClusterUtility();
+          System.out.println(propFileName);
+          FileReader reader=new FileReader(propFileName); 
+          prop.load(reader);  
+
+
+          // get the property value and print it out
+          String cluster_url = prop.getProperty("cluster_url");
+          return cluster_url;
+     }
 
      static {
 
           try {
                config = new Config();
-               cluster_url = "redis://kkm00cya.in.oracle.com:6379, redis://kkm00aot.in.oracle.com:6380,redis://blr00bfm.in.oracle.com:6381";               
+               
+              // cluster_url = "redis://kkm00cya.in.oracle.com:6379, redis://kkm00aot.in.oracle.com:6380,redis://blr00bfm.in.oracle.com:6381";               
+               cluster_url = getProperties();
                String redis_urls[]=cluster_url.split(",");
                final Codec codec = new SerializationCodec();
                Config config = new Config();
