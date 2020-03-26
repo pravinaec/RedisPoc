@@ -28,11 +28,7 @@ public class RedisController {
          }
     }
     
-    @GetMapping("/getListener/{name}")
-    public Set<String> getListener(@PathVariable("name") String name) {
-         RedissonClient client=RedisClusterUtility.getRedisClient();
-        return client.getSet("LISTNERS"+name);
-    }
+ 
 //    // Save
 //    @PostMapping("/books")
 //    //return 201 instead of 200
